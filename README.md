@@ -1,6 +1,6 @@
 # active_aspire
 
-fitness app for class prject
+fitness app for course prject
 
 ## Getting Started
 
