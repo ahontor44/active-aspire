@@ -4,7 +4,6 @@ import 'home_screen_model.dart';
 
 class WorkoutDetailScreen extends StatelessWidget {
   final String workout;
-
   const WorkoutDetailScreen({super.key, required this.workout});
 
   @override
@@ -12,7 +11,6 @@ class WorkoutDetailScreen extends StatelessWidget {
     final workoutIndex = Provider.of<HomeScreenModel>(context)
         .items
         .indexWhere((item) => item["title"] == workout);
-
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -69,12 +67,10 @@ class WorkoutDetailScreen extends StatelessWidget {
       ),
     );
   }
-
   void _showAddExerciseDialog(BuildContext context, HomeScreenModel model, int workoutIndex) {
     final TextEditingController exerciseController = TextEditingController();
     final TextEditingController setsController = TextEditingController();
     final TextEditingController repsController = TextEditingController();
-
     showDialog(
       context: context,
       builder: (context) {
@@ -122,13 +118,11 @@ class WorkoutDetailScreen extends StatelessWidget {
       },
     );
   }
-
   void _showEditExerciseDialog(BuildContext context, HomeScreenModel model, int workoutIndex, int exerciseIndex) {
     final exercise = model.items[workoutIndex]["exercises"][exerciseIndex];
     final TextEditingController exerciseController = TextEditingController(text: exercise['name']);
     final TextEditingController setsController = TextEditingController(text: exercise['sets'].toString());
     final TextEditingController repsController = TextEditingController(text: exercise['reps'].toString());
-
     showDialog(
       context: context,
       builder: (context) {

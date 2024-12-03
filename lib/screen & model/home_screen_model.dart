@@ -1,5 +1,7 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreenModel extends ChangeNotifier {
   List<Map<String, dynamic>> items = [
@@ -10,12 +12,31 @@ class HomeScreenModel extends ChangeNotifier {
     {"title": "Weight Training", "icon": Icons.fitness_center, "exercises": <Map<String, dynamic>>[]},
   ];
 
+  HomeScreenModel() {
+    _loadData();
+  }
+
+  Future<void> _saveData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('workoutData', jsonEncode(items));
+  }
+
+  Future<void> _loadData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? data = prefs.getString('workoutData');
+    if (data != null) {
+      items = List<Map<String, dynamic>>.from(jsonDecode(data));
+      notifyListeners();
+    }
+  }
+
   void addNewWorkout(String workoutName, List<Map<String, dynamic>> exercises) {
     items.add({
       "title": workoutName,
       "icon": Icons.fitness_center,
       "exercises": exercises,
     });
+    _saveData();
     notifyListeners();
     Fluttertoast.showToast(msg: "Workout added", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
   }
@@ -26,30 +47,35 @@ class HomeScreenModel extends ChangeNotifier {
       "icon": items[index]["icon"],
       "exercises": exercises,
     };
+    _saveData();
     notifyListeners();
     Fluttertoast.showToast(msg: "Workout updated", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
   }
 
   void deleteWorkout(int index) {
     items.removeAt(index);
+    _saveData();
     notifyListeners();
     Fluttertoast.showToast(msg: "Workout deleted", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
   }
 
   void addExercise(int workoutIndex, Map<String, dynamic> exercise) {
     items[workoutIndex]["exercises"].add(exercise);
+    _saveData();
     notifyListeners();
     Fluttertoast.showToast(msg: "Exercise added", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
   }
 
   void updateExercise(int workoutIndex, int exerciseIndex, Map<String, dynamic> updatedExercise) {
     items[workoutIndex]["exercises"][exerciseIndex] = updatedExercise;
+    _saveData();
     notifyListeners();
     Fluttertoast.showToast(msg: "Exercise updated", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
   }
 
   void deleteExercise(int workoutIndex, int exerciseIndex) {
     items[workoutIndex]["exercises"].removeAt(exerciseIndex);
+    _saveData();
     notifyListeners();
     Fluttertoast.showToast(msg: "Exercise deleted", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
   }

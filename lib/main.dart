@@ -1,12 +1,12 @@
-import 'package:active_aspire/screen/home_screen.dart';
-import 'package:active_aspire/screen/home_screen_model.dart';
-import 'package:active_aspire/screen/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'screen/settings_screen.dart';
-import 'screen/add_workout_screen.dart';
-import 'screen/workout_detail_screen.dart';
-import 'screen/stat_result.dart';
+import 'screen & model/theme_provider.dart';
+import 'screen & model/home_screen.dart';
+import 'screen & model/home_screen_model.dart';
+import 'screen & model/profile_screen.dart';
+import 'screen & model/settings_screen.dart';
+import 'screen & model/workout_detail_screen.dart';
+
 void main() {
   runApp(MyFitnessApp());
 }
@@ -21,24 +21,32 @@ class MyFitnessApp extends StatefulWidget {
 class _MyFitnessAppState extends State<MyFitnessApp> {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => HomeScreenModel(),
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          brightness: Brightness.light,
-          primarySwatch: Colors.blue, ),
-        darkTheme: ThemeData(
-          brightness: Brightness.dark,
-          primarySwatch: Colors.blueGrey,
-        ),
-        themeMode: ThemeMode.system,
-        title: 'Fitness App',
-        home: HomeScreen(),
-        routes: {
-          '/settings': (context) => const SettingsScreen(),
-          '/profile': (context) => const ProfileScreen(),
-          '/workout_detail': (context) => const WorkoutDetailScreen(workout: ''),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
+        ChangeNotifierProvider(create: (_) => HomeScreenModel()),
+      ],
+      child: Consumer<ThemeProvider>(
+        builder: (context, themeProvider, child) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(
+              brightness: Brightness.light,
+              primarySwatch: Colors.blue,
+            ),
+            darkTheme: ThemeData(
+              brightness: Brightness.dark,
+              primarySwatch: Colors.blueGrey,
+            ),
+            themeMode: themeProvider.themeMode,
+            title: 'Fitness App',
+            home: HomeScreen(),
+            routes: {
+              '/settings': (context) => const SettingsScreen(),
+              '/profile': (context) => const ProfileScreen(),
+              '/workout_detail': (context) => const WorkoutDetailScreen(workout: ''),
+            },
+          );
         },
       ),
     );

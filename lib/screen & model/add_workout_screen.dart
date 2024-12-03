@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
 
 class AddWorkoutDialog extends StatefulWidget {
   final Function(String, List<Map<String, dynamic>>) onAddWorkout;
@@ -23,12 +25,30 @@ class _AddWorkoutDialogState extends State<AddWorkoutDialog> {
   @override
   void initState() {
     super.initState();
+    _loadData();
     if (widget.existingWorkout != null) {
       _workoutController.text = widget.existingWorkout!;
     }
     if (widget.existingExercises != null) {
       _exercises = List.from(widget.existingExercises!);
     }
+  }
+
+  Future<void> _saveData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('workout', _workoutController.text);
+    prefs.setString('exercises', jsonEncode(_exercises));
+  }
+
+  Future<void> _loadData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _workoutController.text = prefs.getString('workout') ?? '';
+      String? exercisesData = prefs.getString('exercises');
+      if (exercisesData != null) {
+        _exercises = List<Map<String, dynamic>>.from(jsonDecode(exercisesData));
+      }
+    });
   }
 
   void _addExerciseDialog() {
@@ -76,6 +96,7 @@ class _AddWorkoutDialogState extends State<AddWorkoutDialog> {
                     'reps': int.tryParse(repsController.text) ?? 0,
                   });
                 });
+                _saveData();
                 Navigator.pop(context);
               },
               child: Text('Add'),
@@ -131,6 +152,7 @@ class _AddWorkoutDialogState extends State<AddWorkoutDialog> {
                     'reps': int.tryParse(repsController.text) ?? 0,
                   };
                 });
+                _saveData();
                 Navigator.pop(context);
               },
               child: Text('Save'),
@@ -180,6 +202,7 @@ class _AddWorkoutDialogState extends State<AddWorkoutDialog> {
         TextButton(
           onPressed: () {
             widget.onAddWorkout(_workoutController.text, _exercises);
+            _saveData();
             Navigator.pop(context);
           },
           child: Text(widget.existingWorkout == null ? 'Add' : 'Save'),

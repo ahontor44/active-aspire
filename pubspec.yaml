@@ -1,5 +1,5 @@
 name: active_aspire
-description: "fitness app for class prject"
+description: "fitness app for course prject"
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -30,13 +30,13 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  url_launcher: ^6.3.1
   flutter_localizations:
     sdk: flutter
   provider: ^6.0.1
   intl: ^0.19.0
   fluttertoast: ^8.0.7
   http: ^1.2.2
+  shared_preferences: ^2.0.6
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -70,6 +70,7 @@ flutter:
 
   assets:
    - assets/active_aspire_logo.png
+   - assets/profile_picture.png
    - assets/profile_picture2.png
    - assets/profile_picture3.png
    - assets/profile_picture4.png

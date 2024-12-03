@@ -31,10 +31,12 @@ android {
     }
 
     buildTypes {
-
+        release {
+            signingConfig signingConfigs.debug
+        }
     }
-}
 
-flutter {
-    source = "../.."
+    flutter {
+        source = "../.."
+    }
 }

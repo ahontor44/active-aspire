@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+
 class FitnessStatsModel extends ChangeNotifier {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  String name = '';
   String gender = 'Male';
+  String bloodType = 'O+';
   double weight = 0.0;
   double height = 0.0;
   int age = 0;
@@ -17,9 +20,20 @@ class FitnessStatsModel extends ChangeNotifier {
   double oneRepMax = 0.0;
 
   final List<String> genderOptions = ['Male', 'Female'];
+  final List<String> bloodTypeOptions = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'];
+
+  void updateName(String value) {
+    name = value;
+    notifyListeners();
+  }
 
   void updateGender(String newGender) {
     gender = newGender;
+    notifyListeners();
+  }
+
+  void updateBloodType(String newBloodType) {
+    bloodType = newBloodType;
     notifyListeners();
   }
 
@@ -29,9 +43,9 @@ class FitnessStatsModel extends ChangeNotifier {
       notifyListeners();
     } catch (e) {
       Fluttertoast.showToast(
-        msg:'Please enter a valid number for weight.',
-        toastLength:Toast.LENGTH_SHORT,
-        gravity:ToastGravity.BOTTOM,
+        msg: 'Please enter a valid number for weight.',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
       );
     }
   }

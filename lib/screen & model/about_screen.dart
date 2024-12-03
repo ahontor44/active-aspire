@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
+
 
 class AboutScreen extends StatelessWidget {
   const AboutScreen({super.key});
@@ -98,7 +98,7 @@ class AboutScreen extends StatelessWidget {
                           ),
                           GestureDetector(
                             onTap: () {
-                              _launchEmail(member['email']!);
+                              member['email'];
                             },
                             child: Text(
                               member['email']!,
@@ -120,18 +120,5 @@ class AboutScreen extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  void _launchEmail(String email) async {
-    final Uri emailUri = Uri(
-      scheme: 'mailto',
-      path: email,
-      query: 'subject=App Inquiry&body=Hello,', // Add subject and body here
-    );
-    if (await canLaunch(emailUri.toString())) {
-      await launch(emailUri.toString());
-    } else {
-      print('Could not launch $emailUri');
-    }
   }
 }

@@ -16,6 +16,7 @@ class FitnessStatsScreen extends StatelessWidget {
         builder: (context, model, child) {
           return Scaffold(
             appBar: AppBar(
+              centerTitle: true,
               title: Text('Fitness Stats Input'),
             ),
             body: SingleChildScrollView(
@@ -24,21 +25,21 @@ class FitnessStatsScreen extends StatelessWidget {
                 child: Form(
                   key: model.formKey,
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      DropdownButtonFormField<String>(
-                        value: model.gender,
-                        decoration: InputDecoration(labelText: 'Gender'),
-                        onChanged: (String? newValue) {
-                          model.updateGender(newValue!);
-                        },
-                        items: model.genderOptions.map<
-                            DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
+                      CupertinoTextField(
+                        placeholder: 'Name',
+                        onChanged: model.updateName,
+                        style: TextStyle(
+                          color: isDarkMode ? Colors.white : Colors.black,
+                        ),
+                        decoration: BoxDecoration(
+                          color: isDarkMode ? Colors.grey[850] : Colors.white,
+                          borderRadius: BorderRadius.circular(8.0),
+                          border: Border.all(color: Colors.grey),
+                        ),
                       ),
+                      SizedBox(height: 10),
                       CupertinoTextField(
                         placeholder: 'Weight (kg)',
                         keyboardType: TextInputType.number,
@@ -80,6 +81,36 @@ class FitnessStatsScreen extends StatelessWidget {
                           border: Border.all(color: Colors.grey),
                         ),
                       ),
+                      SizedBox(height: 10),
+                      DropdownButtonFormField<String>(
+                        value: model.gender,
+                        decoration: InputDecoration(labelText: 'Gender'),
+                        onChanged: (String? newValue) {
+                          model.updateGender(newValue!);
+                        },
+                        items: model.genderOptions.map<
+                            DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      ),
+                      SizedBox(height: 10),
+                      DropdownButtonFormField<String>(
+                        value: model.bloodType,
+                        decoration: InputDecoration(labelText: 'Blood Type'),
+                        onChanged: (String? newValue) {
+                          model.updateBloodType(newValue!);
+                        },
+                        items: model.bloodTypeOptions.map<
+                            DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      ),
                       SizedBox(height: 20),
                       ElevatedButton(
                         onPressed: () {
@@ -90,12 +121,12 @@ class FitnessStatsScreen extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => FitnessStatsResultsScreen(
-                                  name: 'User', // Replace with actual user data
+                                  name: model.name,
                                   gender: model.gender,
                                   weight: model.weight,
                                   height: model.height,
                                   age: model.age,
-                                  bloodType: 'O+', // Replace with actual blood type
+                                  bloodType: model.bloodType,
                                 ),
                               ),
                             );
