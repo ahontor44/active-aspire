@@ -1,9 +1,9 @@
+import 'package:active_aspire/screen%20&%20model/add_workout_screen.dart';
 import 'about_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'home_screen_model.dart';
 import 'workout_detail_screen.dart';
-import 'add_workout_screen.dart';
 import 'profile_screen.dart';
 import 'settings_screen.dart';
 import 'fitness_stats_screen.dart';
@@ -51,42 +51,67 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-            ListTile(
-              title: Text('Home'),
-              onTap: () {
-                Navigator.pop(context);
-              },
+            SizedBox(
+              child: SizedBox(
+                height: 50,
+                width: 100,
+                child: ListTile(
+                  dense: true,
+                  leading: Icon(Icons.home_filled),
+                  title: Text('Home'),
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ),
             ),
-            ListTile(
-              title: Text('Profile'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ProfileScreen()),
-                );
-              },
+            SizedBox(
+              height: 50,
+              width: 100,
+              child: ListTile(
+                dense: true,
+                leading: Icon(Icons.person),
+                title: Text('Profile'),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ProfileScreen()),
+                  );
+                },
+              ),
             ),
-            ListTile(
-              enabled: true,
-              iconColor: Colors.green,
-              title: Text('Settings'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SettingsScreen()),
-                );
-              },
+            SizedBox(
+              height: 50,
+              width: 100,
+              child: ListTile(
+                dense: true,
+                leading: Icon(Icons.settings),
+                enabled: true,
+                title: Text('Settings'),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SettingsScreen()),
+                  );
+                },
+              ),
             ),
-            ListTile(
-              enabled: true,
-              iconColor: Colors.green,
-              title: Text('About Us'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => AboutScreen()),
-                );
-              },
+            SizedBox(
+              height: 50,
+              width: 100,
+              child: ListTile(
+
+                dense: true,
+                leading: Icon(Icons.info),
+                enabled: true,
+                title: Text('About Us',textAlign: TextAlign.start),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => AboutScreen()),
+                  );
+                },
+              ),
             ),
           ],
         ),
@@ -95,7 +120,6 @@ class _HomeScreenState extends State<HomeScreen> {
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20.0),
-
         ),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(16.0),
@@ -118,18 +142,18 @@ class _HomeScreenState extends State<HomeScreen> {
                 label: 'Settings',
               ),
             ],
-
             currentIndex: _selectedIndex,
             showUnselectedLabels: true,
             selectedItemColor: Colors.white,
             unselectedItemColor: Colors.white,
             onTap: _onItemTapped,
             type: BottomNavigationBarType.fixed,
-            backgroundColor: Colors.blue,
+            backgroundColor: Colors.blueAccent,
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: _selectedIndex == 0
+          ? FloatingActionButton(
         onPressed: () {
           Navigator.push(
             context,
@@ -137,7 +161,8 @@ class _HomeScreenState extends State<HomeScreen> {
           );
         },
         child: Icon(Icons.calculate),
-      ),
+      )
+          : null,
     );
   }
 }
@@ -149,10 +174,25 @@ class HomeContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<HomeScreenModel>(
       builder: (context, model, child) {
-        return Column(
-          children: [
-            Expanded(
-              child: GridView.builder(
+        var defaultWorkouts = model.itemsWithIcons.where((item) => !item["isCustom"]).toList();
+        var customWorkouts = model.itemsWithIcons.where((item) => item["isCustom"]).toList();
+
+        return SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Default Workouts Section
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text(
+                  'Default Workouts',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              GridView.builder(
                 padding: EdgeInsets.all(10.0),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
@@ -160,18 +200,21 @@ class HomeContent extends StatelessWidget {
                   mainAxisSpacing: 10.0,
                   childAspectRatio: 1.0,
                 ),
-                itemCount: model.items.length,
+                itemCount: defaultWorkouts.length,
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
+                  var item = defaultWorkouts[index];
                   return GestureDetector(
                     onLongPress: () {
-                      showWorkoutOptions(context, model, index);
+                      showWorkoutOptions(context, model, index, isCustom: false);
                     },
                     onTap: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => WorkoutDetailScreen(
-                            workout: model.items[index]["title"],
+                            workout: item["title"],
                           ),
                         ),
                       );
@@ -181,10 +224,10 @@ class HomeContent extends StatelessWidget {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Icon(model.items[index]["icon"], size: 50, color: Colors.white),
+                          Icon(item["icon"], size: 50, color: Colors.white),
                           SizedBox(height: 10),
                           Text(
-                            model.items[index]["title"],
+                            item["title"],
                             textAlign: TextAlign.center,
                             style: TextStyle(fontSize: 16, color: Colors.white),
                           ),
@@ -194,23 +237,90 @@ class HomeContent extends StatelessWidget {
                   );
                 },
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: ElevatedButton(
-                onPressed: () {
-                  showAddWorkoutDialog(context, model);
-                },
-                child: Text('Add New Workout'),
+              // Custom Workouts Section
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Custom Workouts',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Center(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          showAddWorkoutDialog(context, model);
+                        },
+                        child: Container(
+                          height: 30,
+                          width: 30,
+                          decoration: BoxDecoration(
+                            border:Border.all(color: Colors.blueAccent),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                            child: Icon(Icons.add, color: Colors.blueAccent)),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+              GridView.builder(
+                padding: EdgeInsets.all(10.0),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 10.0,
+                  mainAxisSpacing: 10.0,
+                  childAspectRatio: 1.0,
+                ),
+                itemCount: customWorkouts.length,
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) {
+                  var item = customWorkouts[index];
+                  return GestureDetector(
+                    onLongPress: () {
+                      showWorkoutOptions(context, model, index, isCustom: true);
+                    },
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => WorkoutDetailScreen(
+                            workout: item["title"],
+                          ),
+                        ),
+                      );
+                    },
+                    child: Card(
+                      color: Colors.blueAccent,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Icon(item["icon"], size: 50, color: Colors.white),
+                          SizedBox(height: 10),
+                          Text(
+                            item["title"],
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontSize: 16, color: Colors.white),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
         );
       },
     );
   }
 
-  void showWorkoutOptions(BuildContext context, HomeScreenModel model, int index) {
+  void showWorkoutOptions(BuildContext context, HomeScreenModel model, int index, {required bool isCustom}) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -224,7 +334,7 @@ class HomeContent extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) => AddWorkoutDialog(
-                    onAddWorkout: (newTitle, exercises) => model.updateWorkout(index, newTitle, exercises),
+                    onAddWorkout: (newTitle, exercises) => model.updateWorkout(index, newTitle, exercises, isCustom: isCustom),
                     existingWorkout: model.items[index]["title"],
                     existingExercises: model.items[index]["exercises"],
                   ),
@@ -244,7 +354,6 @@ class HomeContent extends StatelessWidget {
       ),
     );
   }
-
   void showAddWorkoutDialog(BuildContext context, HomeScreenModel model) {
     showDialog(
       context: context,

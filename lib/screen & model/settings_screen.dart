@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'theme_provider.dart';
+import 'profile_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -40,7 +41,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
             ListTile(
               title: Text('Set Profile Picture'),
-              onTap: _showProfilePictureDialog,
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ProfileScreen()),
+                );
+              },
             ),
             ListTile(
               title: Text('Privacy Settings'),
@@ -82,26 +88,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 Navigator.of(context).pop();
               },
               child: Text('Save'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  void _showProfilePictureDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Set Profile Picture'),
-          content: Text('Profile picture setting functionality goes here.'),
-          actions: <Widget>[
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('Close'),
             ),
           ],
         );
