@@ -6,18 +6,22 @@ import 'screen & model/home_screen_model.dart';
 import 'screen & model/profile_screen.dart';
 import 'screen & model/settings_screen.dart';
 import 'screen & model/workout_detail_screen.dart';
-
 void main() {
-  runApp(MyFitnessApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
+        ChangeNotifierProvider(create: (_) => HomeScreenModel()),
+      ],
+    child: MyFitnessApp(),
+    ),
+  );
 }
-
 class MyFitnessApp extends StatefulWidget {
   const MyFitnessApp({super.key});
-
   @override
   State<MyFitnessApp> createState() => _MyFitnessAppState();
 }
-
 class _MyFitnessAppState extends State<MyFitnessApp> {
   @override
   Widget build(BuildContext context) {

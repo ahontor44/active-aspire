@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreenModel extends ChangeNotifier {
@@ -38,7 +37,6 @@ class HomeScreenModel extends ChangeNotifier {
     });
     _saveData();
     notifyListeners();
-    Fluttertoast.showToast(msg: "Workout added", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
   }
 
   void updateWorkout(int index, String newTitle, List<Map<String, dynamic>> exercises) {
@@ -49,34 +47,29 @@ class HomeScreenModel extends ChangeNotifier {
     };
     _saveData();
     notifyListeners();
-    Fluttertoast.showToast(msg: "Workout updated", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
   }
 
   void deleteWorkout(int index) {
     items.removeAt(index);
     _saveData();
     notifyListeners();
-    Fluttertoast.showToast(msg: "Workout deleted", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
   }
 
   void addExercise(int workoutIndex, Map<String, dynamic> exercise) {
     items[workoutIndex]["exercises"].add(exercise);
     _saveData();
     notifyListeners();
-    Fluttertoast.showToast(msg: "Exercise added", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
   }
 
   void updateExercise(int workoutIndex, int exerciseIndex, Map<String, dynamic> updatedExercise) {
     items[workoutIndex]["exercises"][exerciseIndex] = updatedExercise;
     _saveData();
     notifyListeners();
-    Fluttertoast.showToast(msg: "Exercise updated", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
   }
 
   void deleteExercise(int workoutIndex, int exerciseIndex) {
     items[workoutIndex]["exercises"].removeAt(exerciseIndex);
     _saveData();
     notifyListeners();
-    Fluttertoast.showToast(msg: "Exercise deleted", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
   }
 }
