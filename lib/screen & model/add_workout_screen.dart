@@ -1,6 +1,9 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
+
 class AddWorkoutDialog extends StatefulWidget {
   final Function(String, List<Map<String, dynamic>>) onAddWorkout;
   final String? existingWorkout;
@@ -14,6 +17,7 @@ class AddWorkoutDialog extends StatefulWidget {
   @override
   _AddWorkoutDialogState createState() => _AddWorkoutDialogState();
 }
+
 class _AddWorkoutDialogState extends State<AddWorkoutDialog> {
   final TextEditingController _workoutController = TextEditingController();
   List<Map<String, dynamic>> _exercises = [];
@@ -28,11 +32,13 @@ class _AddWorkoutDialogState extends State<AddWorkoutDialog> {
       _exercises = List.from(widget.existingExercises!);
     }
   }
+
   Future<void> _saveData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('workout', _workoutController.text);
     prefs.setString('exercises', jsonEncode(_exercises));
   }
+
   Future<void> _loadData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
@@ -43,6 +49,7 @@ class _AddWorkoutDialogState extends State<AddWorkoutDialog> {
       }
     });
   }
+
   void _addExerciseDialog() {
     final TextEditingController exerciseController = TextEditingController();
     final TextEditingController setsController = TextEditingController();
@@ -99,9 +106,12 @@ class _AddWorkoutDialogState extends State<AddWorkoutDialog> {
   }
 
   void _editExerciseDialog(int index) {
-    final TextEditingController exerciseController = TextEditingController(text: _exercises[index]['name']);
-    final TextEditingController setsController = TextEditingController(text: _exercises[index]['sets'].toString());
-    final TextEditingController repsController = TextEditingController(text: _exercises[index]['reps'].toString());
+    final TextEditingController exerciseController =
+        TextEditingController(text: _exercises[index]['name']);
+    final TextEditingController setsController =
+        TextEditingController(text: _exercises[index]['sets'].toString());
+    final TextEditingController repsController =
+        TextEditingController(text: _exercises[index]['reps'].toString());
 
     showDialog(
       context: context,
@@ -157,7 +167,8 @@ class _AddWorkoutDialogState extends State<AddWorkoutDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(widget.existingWorkout == null ? 'Add Workout' : 'Edit Workout'),
+      title:
+          Text(widget.existingWorkout == null ? 'Add Workout' : 'Edit Workout'),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -172,7 +183,8 @@ class _AddWorkoutDialogState extends State<AddWorkoutDialog> {
           ..._exercises.map((exercise) {
             int index = _exercises.indexOf(exercise);
             return ListTile(
-              title: Text('${exercise['name']} - Sets: ${exercise['sets']}, Reps: ${exercise['reps']}'),
+              title: Text(
+                  '${exercise['name']} - Sets: ${exercise['sets']}, Reps: ${exercise['reps']}'),
               trailing: IconButton(
                 icon: Icon(Icons.edit),
                 onPressed: () {

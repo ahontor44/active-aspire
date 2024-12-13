@@ -1,15 +1,19 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'editing_profile_screen.dart';
+
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
+
 class _ProfileScreenState extends State<ProfileScreen> {
   String name = 'Admin';
   String email = 'john.doe@example.com';
@@ -21,6 +25,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     super.initState();
     _loadProfileImage();
   }
+
   Future<void> _loadProfileImage() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? imagePath = prefs.getString('profileImage');
@@ -30,9 +35,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
       });
     }
   }
+
   Future<void> _pickImage() async {
     if (await _requestPermissions()) {
-      final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+      final pickedFile =
+          await ImagePicker().pickImage(source: ImageSource.gallery);
 
       if (pickedFile != null) {
         setState(() {
@@ -43,6 +50,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       }
     }
   }
+
   Future<bool> _requestPermissions() async {
     Map<Permission, PermissionStatus> statuses = await [
       Permission.storage,
@@ -51,11 +59,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
     bool allGranted = statuses.values.every((status) => status.isGranted);
     if (!allGranted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Permissions are required to select a profile picture.')),
+        SnackBar(
+            content:
+                Text('Permissions are required to select a profile picture.')),
       );
     }
     return allGranted;
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,7 +86,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   radius: 50,
                   backgroundImage: _profileImage != null
                       ? FileImage(_profileImage!)
-                      : AssetImage('assets/profile_picture.png') as ImageProvider,
+                      : AssetImage('assets/profile_picture.png')
+                          as ImageProvider,
                   child: _profileImage == null
                       ? Icon(Icons.camera_alt, size: 50, color: Colors.white)
                       : null,
@@ -141,7 +153,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       currentEmail: email,
                       currentPhoneNumber: phoneNumber,
                       currentBio: bio,
-                      onSave: (String newName, String newEmail, String newPhoneNumber, String newBio) {
+                      onSave: (String newName, String newEmail,
+                          String newPhoneNumber, String newBio) {
                         setState(() {
                           name = newName;
                           email = newEmail;

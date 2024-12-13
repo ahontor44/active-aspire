@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:active_aspire/screen%20&%20model/add_workout_screen.dart';
 import 'about_screen.dart';
 import 'package:flutter/material.dart';
@@ -7,11 +9,13 @@ import 'workout_detail_screen.dart';
 import 'profile_screen.dart';
 import 'settings_screen.dart';
 import 'fitness_stats_screen.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
+
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
   static const List<Widget> _widgetOptions = <Widget>[
@@ -25,6 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
       _selectedIndex = index;
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -94,11 +99,10 @@ class _HomeScreenState extends State<HomeScreen> {
               height: 50,
               width: 100,
               child: ListTile(
-
                 dense: true,
                 leading: Icon(Icons.info),
                 enabled: true,
-                title: Text('About Us',textAlign: TextAlign.start),
+                title: Text('About Us', textAlign: TextAlign.start),
                 onTap: () {
                   Navigator.push(
                     context,
@@ -148,26 +152,29 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       floatingActionButton: _selectedIndex == 0
           ? FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => FitnessStatsScreen()),
-          );
-        },
-        child: Icon(Icons.calculate),
-      )
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => FitnessStatsScreen()),
+                );
+              },
+              child: Icon(Icons.calculate),
+            )
           : null,
     );
   }
 }
+
 class HomeContent extends StatelessWidget {
   const HomeContent({super.key});
   @override
   Widget build(BuildContext context) {
     return Consumer<HomeScreenModel>(
       builder: (context, model, child) {
-        var defaultWorkouts = model.itemsWithIcons.where((item) => !item["isCustom"]).toList();
-        var customWorkouts = model.itemsWithIcons.where((item) => item["isCustom"]).toList();
+        var defaultWorkouts =
+            model.itemsWithIcons.where((item) => !item["isCustom"]).toList();
+        var customWorkouts =
+            model.itemsWithIcons.where((item) => item["isCustom"]).toList();
         return SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -197,7 +204,8 @@ class HomeContent extends StatelessWidget {
                   var item = defaultWorkouts[index];
                   return GestureDetector(
                     onLongPress: () {
-                      showWorkoutOptions(context, model, index, isCustom: false);
+                      showWorkoutOptions(context, model, index,
+                          isCustom: false);
                     },
                     onTap: () {
                       Navigator.push(
@@ -246,12 +254,12 @@ class HomeContent extends StatelessWidget {
                           showAddWorkoutDialog(context, model);
                         },
                         child: Container(
-                          height: 30,
-                          width: 30,
-                          decoration: BoxDecoration(
-                            border:Border.all(color: Colors.blueAccent),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
+                            height: 30,
+                            width: 30,
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.blueAccent),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
                             child: Icon(Icons.add, color: Colors.blueAccent)),
                       ),
                     ),
@@ -309,7 +317,10 @@ class HomeContent extends StatelessWidget {
       },
     );
   }
-  void showWorkoutOptions(BuildContext context, HomeScreenModel model, int index, {required bool isCustom}) {
+
+  void showWorkoutOptions(
+      BuildContext context, HomeScreenModel model, int index,
+      {required bool isCustom}) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -323,7 +334,9 @@ class HomeContent extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) => AddWorkoutDialog(
-                    onAddWorkout: (newTitle, exercises) => model.updateWorkout(index, newTitle, exercises, isCustom: isCustom),
+                    onAddWorkout: (newTitle, exercises) => model.updateWorkout(
+                        index, newTitle, exercises,
+                        isCustom: isCustom),
                     existingWorkout: model.items[index]["title"],
                     existingExercises: model.items[index]["exercises"],
                   ),
@@ -343,6 +356,7 @@ class HomeContent extends StatelessWidget {
       ),
     );
   }
+
   void showAddWorkoutDialog(BuildContext context, HomeScreenModel model) {
     showDialog(
       context: context,

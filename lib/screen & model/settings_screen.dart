@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'theme_provider.dart';
@@ -16,7 +18,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    bool isDarkMode = Provider.of<ThemeProvider>(context).themeMode == ThemeMode.dark;
+    bool isDarkMode =
+        Provider.of<ThemeProvider>(context).themeMode == ThemeMode.dark;
 
     return Scaffold(
       appBar: AppBar(
@@ -31,7 +34,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
               title: Text('Dark Mode'),
               value: isDarkMode,
               onChanged: (bool value) {
-                Provider.of<ThemeProvider>(context, listen: false).toggleTheme(value);
+                Provider.of<ThemeProvider>(context, listen: false)
+                    .toggleTheme(value);
               },
             ),
             ListTile(
@@ -68,7 +72,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   void _showUsernameDialog() {
-    TextEditingController usernameController = TextEditingController(text: _username);
+    TextEditingController usernameController =
+        TextEditingController(text: _username);
 
     showDialog(
       context: context,
