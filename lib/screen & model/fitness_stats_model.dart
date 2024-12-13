@@ -18,10 +18,8 @@ class FitnessStatsModel extends ChangeNotifier {
   double healthyWeight = 0.0;
   double caloriesBurned = 0.0;
   double oneRepMax = 0.0;
-
   final List<String> genderOptions = ['Male', 'Female'];
   final List<String> bloodTypeOptions = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'];
-
   void updateName(String value) {
     name = value;
     notifyListeners();

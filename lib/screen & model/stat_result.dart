@@ -44,13 +44,9 @@ class FitnessStatsResultsScreen extends StatelessWidget {
   double calculateIdealWeight() {
     return 22.5 * ((height / 100) * (height / 100));
   }
-
-
-
   double calculateOneRepMax() {
     return weight * (1 + (10 / 30)); // Example: Epley formula
   }
-
   @override
   Widget build(BuildContext context) {
     // Input validation
