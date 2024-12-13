@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-
 class FitnessStatsResultsScreen extends StatelessWidget {
   final String name;
   final String gender;
@@ -8,7 +7,6 @@ class FitnessStatsResultsScreen extends StatelessWidget {
   final double height;
   final int age;
   final String bloodType;
-
   const FitnessStatsResultsScreen({
     super.key,
     required this.name,
@@ -47,13 +45,7 @@ class FitnessStatsResultsScreen extends StatelessWidget {
     return 22.5 * ((height / 100) * (height / 100));
   }
 
-  double calculateHealthyWeight() {
-    return calculateIdealWeight();
-  }
 
-  double calculateCaloriesBurned() {
-    return 500; // Example: calories burned in an hour of exercise
-  }
 
   double calculateOneRepMax() {
     return weight * (1 + (10 / 30)); // Example: Epley formula
@@ -84,24 +76,16 @@ class FitnessStatsResultsScreen extends StatelessWidget {
         ),
       );
     }
-
     double bmi = calculateBMI();
     double bmr = calculateBMR();
     double bodyFat = calculateBodyFat(bmi);
     double leanBodyMass = calculateLeanBodyMass(bmi, bodyFat);
-    double idealWeight = calculateIdealWeight();
-    double healthyWeight = calculateHealthyWeight();
-    double caloriesBurned = calculateCaloriesBurned();
     double oneRepMax = calculateOneRepMax();
-
     List<Map<String, dynamic>> stats = [
       {"title": 'BMI', "value": bmi.toStringAsFixed(2), "icon": Icons.perm_data_setting_outlined},
       {"title": 'BMR', "value": '${bmr.toStringAsFixed(2)} kcal/day', "icon": Icons.scale},
       {"title": 'Body Fat', "value": '${bodyFat.toStringAsFixed(2)}%', "icon": Icons.man},
-      {"title": 'Ideal Weight', "value": '${idealWeight.toStringAsFixed(2)} kg', "icon": Icons.scale_rounded},
       {"title": 'Lean Body Mass', "value": '${leanBodyMass.toStringAsFixed(2)} kg', "icon": Icons.leaderboard_sharp},
-      {"title": 'Healthy Weight', "value": '${healthyWeight.toStringAsFixed(2)} kg', "icon": Icons.hail},
-      {"title": 'Calories Burned', "value": '${caloriesBurned.toStringAsFixed(2)} kcal', "icon": Icons.no_food_sharp},
       {"title": 'One Rep Max', "value": '${oneRepMax.toStringAsFixed(2)} kg', "icon": Icons.sick_sharp},
       {"title": 'Blood Type', "value": bloodType, "icon": Icons.bloodtype},
     ];
