@@ -4,27 +4,23 @@ import 'dart:io';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'editing_profile_screen.dart';
-
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
-
 class _ProfileScreenState extends State<ProfileScreen> {
   String name = 'Admin';
   String email = 'john.doe@example.com';
   String phoneNumber = '+1 123 456 7890';
   String bio = 'Flutter Developer & Tech Enthusiast';
   File? _profileImage;
-
   @override
   void initState() {
     super.initState();
     _loadProfileImage();
   }
-
   Future<void> _loadProfileImage() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? imagePath = prefs.getString('profileImage');
@@ -34,7 +30,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
       });
     }
   }
-
   Future<void> _pickImage() async {
     if (await _requestPermissions()) {
       final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -48,24 +43,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
       }
     }
   }
-
   Future<bool> _requestPermissions() async {
     Map<Permission, PermissionStatus> statuses = await [
       Permission.storage,
       Permission.camera,
     ].request();
-
     bool allGranted = statuses.values.every((status) => status.isGranted);
-
     if (!allGranted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Permissions are required to select a profile picture.')),
       );
     }
-
     return allGranted;
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

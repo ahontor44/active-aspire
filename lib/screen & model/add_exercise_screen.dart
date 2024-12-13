@@ -88,7 +88,11 @@ class WorkoutDetailScreen extends StatelessWidget {
           },
           child: Text('Add'),
         ),
-        ], ); }, ); }
+        ],
+      );
+      },
+    );
+  }
   void _showEditExerciseDialog(BuildContext context,
       HomeScreenModel model,
       int workoutIndex,
@@ -96,6 +100,11 @@ class WorkoutDetailScreen extends StatelessWidget {
     final exercise = model.items[workoutIndex]["exercises"][exerciseIndex];
     final TextEditingController exerciseController = TextEditingController(
         text: exercise['name']); final TextEditingController setsController = TextEditingController(text: exercise['sets'].toString()); final TextEditingController repsController = TextEditingController(text: exercise['reps'].toString()); showDialog( context: context, builder: (context) { return AlertDialog( title: Text('Edit Exercise'), content: Column( mainAxisSize: MainAxisSize.min, children: [ TextField( controller: exerciseController, decoration: InputDecoration(labelText: 'Exercise Name'), ), TextField( controller: setsController, decoration: InputDecoration(labelText: 'Sets'), keyboardType: TextInputType.number, ), TextField( controller: repsController, decoration: InputDecoration(labelText: 'Reps'), keyboardType: TextInputType.number, ), ], ), actions: [ TextButton( onPressed: () { Navigator.pop(context); }, child: Text('Cancel'), ), TextButton( onPressed: () { model.updateExercise(workoutIndex, exerciseIndex, { 'name': exerciseController.text, 'sets': int.tryParse(setsController.text) ?? 0, 'reps': int.tryParse(repsController.text) ?? 0, }); Navigator.pop(context); },
-
-
-  child: Text('Save'), ), ], ); }, ); } }
+      child: Text('Save'),
+    ),
+    ],
+    );
+          },
+    );
+  }
+}

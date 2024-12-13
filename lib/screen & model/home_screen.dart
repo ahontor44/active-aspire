@@ -7,30 +7,24 @@ import 'workout_detail_screen.dart';
 import 'profile_screen.dart';
 import 'settings_screen.dart';
 import 'fitness_stats_screen.dart';
-
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
-
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
-
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
-
   static const List<Widget> _widgetOptions = <Widget>[
     HomeContent(),
     ProfileScreen(),
     FitnessStatsScreen(),
     SettingsScreen(),
   ];
-
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -166,22 +160,18 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
-
 class HomeContent extends StatelessWidget {
   const HomeContent({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Consumer<HomeScreenModel>(
       builder: (context, model, child) {
         var defaultWorkouts = model.itemsWithIcons.where((item) => !item["isCustom"]).toList();
         var customWorkouts = model.itemsWithIcons.where((item) => item["isCustom"]).toList();
-
         return SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Default Workouts Section
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Text(
@@ -319,7 +309,6 @@ class HomeContent extends StatelessWidget {
       },
     );
   }
-
   void showWorkoutOptions(BuildContext context, HomeScreenModel model, int index, {required bool isCustom}) {
     showDialog(
       context: context,

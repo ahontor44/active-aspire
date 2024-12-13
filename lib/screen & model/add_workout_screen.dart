@@ -1,27 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
-
 class AddWorkoutDialog extends StatefulWidget {
   final Function(String, List<Map<String, dynamic>>) onAddWorkout;
   final String? existingWorkout;
   final List<Map<String, dynamic>>? existingExercises;
-
   const AddWorkoutDialog({
     super.key,
     required this.onAddWorkout,
     this.existingWorkout,
     this.existingExercises,
   });
-
   @override
   _AddWorkoutDialogState createState() => _AddWorkoutDialogState();
 }
-
 class _AddWorkoutDialogState extends State<AddWorkoutDialog> {
   final TextEditingController _workoutController = TextEditingController();
   List<Map<String, dynamic>> _exercises = [];
-
   @override
   void initState() {
     super.initState();
@@ -33,13 +28,11 @@ class _AddWorkoutDialogState extends State<AddWorkoutDialog> {
       _exercises = List.from(widget.existingExercises!);
     }
   }
-
   Future<void> _saveData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('workout', _workoutController.text);
     prefs.setString('exercises', jsonEncode(_exercises));
   }
-
   Future<void> _loadData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
@@ -50,12 +43,10 @@ class _AddWorkoutDialogState extends State<AddWorkoutDialog> {
       }
     });
   }
-
   void _addExerciseDialog() {
     final TextEditingController exerciseController = TextEditingController();
     final TextEditingController setsController = TextEditingController();
     final TextEditingController repsController = TextEditingController();
-
     showDialog(
       context: context,
       builder: (context) {
